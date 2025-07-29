@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, current_app
 from models.auction import AuctionModel
+from datetime import datetime
 
 auction_bp = Blueprint('auction', __name__)
 
@@ -38,6 +39,8 @@ def auction_detail(auction_id):
     
     auction = AuctionModel.get_auction(auction_id)
     if auction:
+        # Pastikan bids ada dan beri nilai default jika tidak
+        auction['bids'] = auction.get('bids', [])
         return render_template('auction_detail.html', auction=auction)
     return "Lelang tidak ditemukan", 404
 

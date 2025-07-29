@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h2>Detail Lelang: {{ auction.item }}</h2>
+    </div>
+    <div class="card-body">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <h5>Harga Awal:</h5>
+                <p>{{ auction.starting_bid | format_rupiah }}</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Bid Tertinggi:</h5>
+                <p>{{ auction.current_bid | format_rupiah }}</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Status:</h5>
+                <p>{{ 'Aktif' if auction.isActive else 'Selesai' }}</p>
+            </div>
+        </div>
+        
+        <h4>Riwayat Bid</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Waktu</th>
+                    <th>User</th>
+                    <th>Bid</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bid in auction.bids %}
+                <tr>
+                    <td>{{ bid.timestamp.strftime('%H:%M:%S') }}</td>
+                    <td>User #{{ bid.user_id }}</td>
+                    <td>{{ bid.amount | format_rupiah }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">Belum ada bid</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="mt-3">
+            <a href="/dashboard" class="btn btn-secondary">Kembali</a>
+            {% if auction.isActive %}
+            <form action="/stop_auction/{{ auction._id }}" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-danger ms-2">Hentikan Lelang</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

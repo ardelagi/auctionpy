@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="mb-4">Lelang Aktif</h1>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Item</th>
+                <th>Harga Awal</th>
+                <th>Bid Tertinggi</th>
+                <th>Pemenang</th>
+                <th>Waktu Tersisa</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for auction in auctions %}
+            <tr>
+                <td>{{ auction.item }}</td>
+                <td>{{ auction.starting_bid | format_rupiah }}</td>
+                <td>{{ auction.current_bid | format_rupiah }}</td>
+                <td>
+                    {% if auction.highest_bidder %}
+                    User #{{ auction.highest_bidder }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td class="countdown" data-start="{{ auction.start_time }}" data-duration="{{ auction.timer }}">
+                    <!-- Diisi JavaScript -->
+                </td>
+                <td>
+                    <a href="/auction/{{ auction._id }}" class="btn btn-sm btn-info">Detail</a>
+                    <form action="/stop_auction/{{ auction._id }}" method="POST" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-danger">Hentikan</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6" class="text-center">Tidak ada lelang aktif</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Countdown timer
+document.querySelectorAll('.countdown').forEach(el => {
+    const startTime = parseFloat(el.dataset.start);
+    const duration = parseFloat(el.dataset.duration);
+    
+    function updateTimer() {
+        const now = Date.now() / 1000;
+        const elapsed = now - startTime;
+        const remaining = Math.max(0, duration - elapsed);
+        
+        const minutes = Math.floor(remaining / 60);
+        const seconds = Math.floor(remaining % 60);
+        
+        el.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (remaining > 0) {
+            setTimeout(updateTimer, 1000);
+        }
+    }
+    
+    updateTimer();
+});
+</script>
+{% endblock %}

@@ -11,6 +11,10 @@ class AuctionModel:
     @staticmethod
     def create_auction(data):
         return auctions.insert_one(data).inserted_id
+        
+    @staticmethod
+    def get_auction(auction_id):
+        return auctions.find_one({'_id': auction_id})
 
     @staticmethod
     def update_auction(auction_id, update_data):

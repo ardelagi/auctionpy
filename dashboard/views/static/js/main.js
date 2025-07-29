@@ -1,13 +1,12 @@
-// Real-time update dengan AJAX
-function updateAuctions() {
-    fetch('/api/auctions')
-        .then(response => response.json())
-        .then(data => {
-            // Proses update tabel
-            console.log('Data updated', data);
-            // Implementasi update UI sesuai kebutuhan
-        });
-}
-
-// Update setiap 10 detik
-setInterval(updateAuctions, 10000);
+// Real-time update (opsional)
+document.addEventListener('DOMContentLoaded', function() {
+    setInterval(() => {
+        fetch('/api/auctions')
+            .then(response => response.json())
+            .then(data => {
+                // Implement update logic here
+                console.log('Received update', data);
+            })
+            .catch(error => console.error('Update error:', error));
+    }, 10000); // Update setiap 10 detik
+});

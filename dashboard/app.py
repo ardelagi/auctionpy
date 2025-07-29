@@ -3,11 +3,13 @@ from controllers.auction_controller import auction_bp
 from config import Config
 from models.auction import AuctionModel
 
-app = Flask(__name__)
-app.config.from_object(Config)
-app.register_blueprint(auction_bp)
+template_dir = os.path.abspath('views/templates')
+static_dir = os.path.abspath('views/static')
 
-# Jinja filter untuk format Rupiah
+app = Flask(__name__, 
+            template_folder=template_dir,
+            static_folder=static_dir)
+
 @app.template_filter('format_rupiah')
 def format_rupiah_filter(value):
     if value >= 1000000:

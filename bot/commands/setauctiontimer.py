@@ -11,13 +11,13 @@ class SetAuctionTimer(commands.Cog):
     @app_commands.command(name="setauctiontimer", description="Set default timer untuk lelang")
     @app_commands.describe(timer="Durasi default dalam detik")
     async def set_auction_timer(self, interaction: discord.Interaction, timer: int):
-        if not any(role.id == ADMIN_ROLE_ID for role in interaction.user.roles):
-            await interaction.response.send_message("Hanya admin yang bisa menggunakan command", ephemeral=True)
+        if ADMIN_ROLE_ID not in [role.id for role in interaction.user.roles]:
+            await interaction.response.send_message("❌ Hanya admin yang bisa menggunakan perintah ini!", ephemeral=True)
             return
         
         AuctionModel.set_default_timer(interaction.guild_id, timer)
         await interaction.response.send_message(
-            f"timer diatur menjadi **{timer} detik**",
+            f"⏱️ Default timer diatur menjadi **{timer} detik**",
             ephemeral=True
         )
 

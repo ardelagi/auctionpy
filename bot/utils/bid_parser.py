@@ -1,18 +1,12 @@
 def parse_bid(text):
     text = text.lower().replace(',', '.').replace(' ', '')
     
-    if text.endswith('jt'):
-        try:
+    try:
+        if text.endswith('jt'):
             return int(float(text[:-2]) * 1000000)
-        except:
-            return None
-    elif text.endswith('rb'):
-        try:
+        elif text.endswith('rb'):
             return int(float(text[:-2]) * 1000)
-        except:
-            return None
-    else:
-        try:
-            return int(text)
-        except:
-            return None
+        else:
+            return int(text.replace('.', ''))
+    except ValueError:
+        return None

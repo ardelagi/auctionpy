@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template
 from controllers.auction_controller import auction_bp
 from config import Config

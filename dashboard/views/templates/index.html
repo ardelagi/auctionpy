@@ -3,6 +3,7 @@
 {% block content %}
 <h1 class="mb-4">Lelang Aktif</h1>
 
+{% if auctions %}
 <div class="table-responsive">
     <table class="table table-hover">
         <thead class="table-dark">
@@ -32,20 +33,21 @@
                     <!-- Diisi JavaScript -->
                 </td>
                 <td>
-                    <a href="/auction/{{ auction._id }}" class="btn btn-sm btn-info">Detail</a>
-                    <form action="/stop_auction/{{ auction._id }}" method="POST" class="d-inline">
+                    <a href="{{ url_for('auction.auction_detail', auction_id=auction._id) }}" class="btn btn-sm btn-info">Detail</a>
+                    <form action="{{ url_for('auction.stop_auction', auction_id=auction._id) }}" method="POST" class="d-inline">
                         <button type="submit" class="btn btn-sm btn-danger">Hentikan</button>
                     </form>
                 </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="6" class="text-center">Tidak ada lelang aktif</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+{% else %}
+<div class="alert alert-info">
+    Tidak ada lelang aktif
+</div>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
@@ -67,6 +69,8 @@ document.querySelectorAll('.countdown').forEach(el => {
         
         if (remaining > 0) {
             setTimeout(updateTimer, 1000);
+        } else {
+            el.textContent = "Selesai";
         }
     }
     

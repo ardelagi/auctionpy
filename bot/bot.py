@@ -19,6 +19,12 @@ async def on_ready():
     await bot.load_extension('commands.startauction')
     await bot.load_extension('commands.stopauction')
     await bot.load_extension('commands.setauctiontimer')
+    
+    synced = await bot.tree.sync()
+    print(f"Command tersinkronisasi: {len(synced)}")
+    
+    await bot.load_extension('commands.startauction')
+    
 
 @bot.event
 async def on_message(message):

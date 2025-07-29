@@ -1,12 +1,19 @@
 body {
     background-color: #f8f9fa;
+    padding-top: 20px;
 }
 
 .card {
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
 .table-hover tbody tr:hover {
     background-color: rgba(13, 110, 253, 0.05);
+}
+
+.countdown {
+    font-weight: bold;
+    color: #dc3545;
 }
